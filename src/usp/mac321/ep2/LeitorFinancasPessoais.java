@@ -16,15 +16,17 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 	private List<Lancamento> lancamentos;
 
 	
-	private boolean repetido(String apelido) throws ApelidoRepetidoException {
-		for (int i = 0; i < usuarios.size(); i++) {
-			if (usuarios.get(i).getApelido().equals(apelido)) {
-				return true;
-			}
+	private boolean repetido(String apelido, List<Usuario> listaUsuarios) throws ApelidoRepetidoException {
+		if (!listaUsuarios.isEmpty()) {
+		for (int i = 0; i < listaUsuarios.size(); i++) {
+			if (listaUsuarios.get(i).getApelido().equals(apelido)) {
+				throw new ApelidoRepetidoException(apelido);
+			}	
 			
-			else throw new ApelidoRepetidoException(apelido);
+			
 		}
 		
+		}
 		return false;
 		
 	}
@@ -37,10 +39,14 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(nomeArquivoUsuarios));
 			String line = null;
+			
+			line = br.readLine();
 			do {
 				line = br.readLine();
-				if (line != null && !repetido(line.split(",")[0])) listaUsuarios.add(new Usuario(line.split(",")[0], line.split(",")[1]));
+				if (line != null && !repetido(line.split(",")[0],listaUsuarios)) {
+					listaUsuarios.add(new Usuario(line.split(",")[0], line.split(",")[1]));
 				
+				}
 				
 			} 
 			
@@ -60,7 +66,7 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 		}
 		
 		catch (ApelidoRepetidoException e) {
-			System.err.println(e);
+			System.err.println(e.toString());
 		}
 		
 		

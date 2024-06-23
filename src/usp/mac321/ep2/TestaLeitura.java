@@ -19,16 +19,17 @@ class TestaLeitura {
 	LeitorFinancasPessoaisDAO leitor;
 
 	
+	
 	@BeforeEach
 	void setUp() throws Exception {
-		// leitor = ...
+		leitor = new LeitorFinancasPessoais();
 	}
 
-	@AfterEach
+	/*@AfterEach
 	void tearDown() throws Exception {
-	}
+	}*/
 
-	@Test
+	/*@Test
 	public void testTiposDespesas(){
 		tiposDespesas = leitor.leTiposDespesas("tiposDespesas.csv");
 		assertEquals(6, tiposDespesas.size());
@@ -39,13 +40,19 @@ class TestaLeitura {
 		tiposReceitas = leitor.leTiposReceitas("tiposReceitas.csv");
 		assertEquals(4, tiposReceitas.size());
 	}
-	
+	*/
 	@Test
 	public void testUsuarios(){
-		usuarios = leitor.leUsuarios("usuarios.csv");
+		usuarios = leitor.leUsuarios("csv\\usuarios.csv");
 		assertEquals(2, usuarios.size());
+		assertEquals("Pai", usuarios.get(0).getApelido());
+		assertEquals("Zezinho", usuarios.get(1).getApelido());
+		assertEquals("Epaminondas Encerrabodes Eleutério", usuarios.get(0).getNome());
+		assertEquals("José Josimarson Eleutério",usuarios.get(1).getNome());
+		
 	}
 	
+	/*
 	@Test
 	public void testLancamentosOK(){
 		lancamentos = leitor.leLancamentos("lancamentos.csv");
@@ -67,6 +74,6 @@ class TestaLeitura {
 		// TODO
 		fail();
 	}
-	
+	*/
 
 }

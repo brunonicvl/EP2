@@ -9,6 +9,10 @@ public class Usuario {
 		this.nome = nome;
 	}
 	
+	public String getNome() {
+		return nome;
+	}
+	
 	public String getApelido() {
 		return apelido;
 	}

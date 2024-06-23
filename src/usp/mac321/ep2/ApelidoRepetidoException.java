@@ -9,7 +9,7 @@ public class ApelidoRepetidoException extends Exception{
 	}
 	
 	
-	public String toString(String apelido) {
+	public String toString() {
 		return "Apelido" + apelido + "está repetido.";
 	}
 }
