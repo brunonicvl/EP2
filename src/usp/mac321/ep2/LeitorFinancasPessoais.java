@@ -5,6 +5,7 @@ import java.util.*;
 import java.io.*;
 import java.text.ParseException;
 
+
 public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 	private static final boolean TIPO_PRINCIPAL = false;
 	private static final boolean SUBCATEGORIA = true;
@@ -27,9 +28,18 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 			} while(line != null);
 			br.close();
 		}
+		
+		catch (FileNotFoundException e) {
+			System.err.println("Arquivo não encontrado");
+
+		} // Não conseguir encontrar se também serve para isso
+		  //IOException serve para isso, mas encontrei uma exceção exatamente para esse problema
+		
 		catch (IOException e) { //pesquisar se isso se aplica a não existir nome de arquivo!!
 			e.printStackTrace();
 		}
+		
+		
 		
 		return listaUsuarios;
 	}
@@ -82,6 +92,11 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 			} while(line != null);
 			br.close();
 		}
+		
+		catch (FileNotFoundException e) {
+			System.err.println("Arquivo não encontrado");
+
+		} 
 		catch (IOException e) { //pesquisar se isso se aplica a não existir nome de arquivo!!
 			e.printStackTrace();
 		}
@@ -138,6 +153,12 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 			} while(line != null);
 			br.close();
 		}
+		
+		catch (FileNotFoundException e) {
+			System.err.println("Arquivo não encontrado");
+
+		}
+		
 		catch (IOException e) { //pesquisar se isso se aplica a não existir nome de arquivo!!
 			e.printStackTrace();
 		}
@@ -187,6 +208,13 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 			} while(line != null);
 			br.close();
 		}
+		
+		
+		catch (FileNotFoundException e) {
+			System.err.println("Arquivo não encontrado");
+
+		}
+		
 		catch (IOException e) { //pesquisar se isso se aplica a não existir nome de arquivo!!
 			e.printStackTrace();
 		}
