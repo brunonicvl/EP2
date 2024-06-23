@@ -210,41 +210,66 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 					String[] lineSplit = line.split(",");
 					
 					int dia, mes, ano;
-					try {
-						dia = Integer.parseInt(lineSplit[0]);
-						mes = Integer.parseInt(lineSplit[1]);
-						ano = Integer.parseInt(lineSplit[2]);
-					}
-					catch(ParseException e) { //HUH??????????????????????????????????
-						throw new ParseException(lineSplit[0] + lineSplit[1] + lineSplit[2], 0);
-					}
-					finally {
-						if(dia<=0) throw new ValorNegativoException(dia);
-						if(dia<=0) throw new ValorNegativoException(mes);
-						if(dia<=0) throw new ValorNegativoException(ano);
-					}
+					dia = Integer.parseInt(lineSplit[0]);
+					mes = Integer.parseInt(lineSplit[1]);
+					ano = Integer.parseInt(lineSplit[2]);
+					if(dia<=0) throw new ValorNegativoException(dia);
+					if(mes<=0) throw new ValorNegativoException(mes);
+					if(ano<=0) throw new ValorNegativoException(ano);
 					
 					Usuario user;
-					try {
-						user = getUsuarioFromList(lineSplit[3], usuarios);
+					user = getUsuarioFromList(lineSplit[3], usuarios);
+					
+					boolean rOuD;
+					if(lineSplit[4].equals("receita")) {
+						rOuD = RECEITA;
 					}
-					catch(UsuarioNaoExistenteException e) {
-						throw new UsuarioNaoExistenteException(lineSplit[3]);
+					else if(lineSplit[4].equals("despesa")) {
+						rOuD = DESPESA;
+					}
+					else {
+						throw new ValorInvalidoException(lineSplit[4]);
 					}
 					
-					listaLancamentos.add(new Lancamento(line.split(",")[0], line.split(",")[1]));
+					TipoOperacao tipo;
+					try {
+						tipo = getTipoReceitaFromList(lineSplit[5], receitas);
+					}
+					catch(TipoNaoRegistradoException e){
+						tipo = getTipoDespesaFromList(lineSplit[5], despesas);
+					}
+					if(tipo.getClass().equals(TipoReceita.class) && (rOuD==DESPESA) ||
+							tipo.getClass().equals(TipoDespesa.class) && (rOuD==RECEITA)) {
+						throw new ConfusaoReceitaDespesaException(lineSplit[5]);
+					}
+					
+					String descricao = lineSplit[6];
+					
+					double valor;
+					valor = Double.parseDouble(lineSplit[7]);
+					if(valor<=0) throw new ValorNegativoException(valor);
+					
+					long identificador;
+					identificador = Long.parseLong(lineSplit[8]);
+					if(identificador<=0) throw new ValorNegativoException(identificador);
+					for(Lancamento i: listaLancamentos) {
+						if(i.identificador==identificador) {
+							throw new IdentificadorRepetidoEmLancamentosException(identificador);
+						}
+					}
+					
+					listaLancamentos.add(new Lancamento(dia, mes, ano, user, rOuD, tipo, descricao, valor, identificador));
 				}
 			} while(line != null);
 			br.close();
 		}
-		
-		
+		catch (IOException e) { //pesquisar se isso se aplica a não existir nome de arquivo!!
+			e.printStackTrace();
+		}
 		catch (FileNotFoundException e) {
 			System.err.println("Arquivo não encontrado");
-
 		}
-		
-		catch (IOException e) { //pesquisar se isso se aplica a não existir nome de arquivo!!
+		catch (Exception e) { //pesquisar se isso se aplica a não existir nome de arquivo!!
 			e.printStackTrace();
 		}
 		
