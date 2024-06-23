@@ -8,8 +8,11 @@ import org.junit.jupiter.api.Test;
 
 class TestaLeitorFinancasPessoais {
 
+	LeitorFinancasPessoais lfp;
+	
 	@BeforeEach
 	void setUp() throws Exception {
+		lfp = new LeitorFinancasPessoais();
 	}
 
 	@AfterEach
@@ -18,7 +21,11 @@ class TestaLeitorFinancasPessoais {
 
 	@Test
 	void test() {
-		fail("Not yet implemented");
+		lfp.leUsuarios("\"C:\\Users\\lclor\\Documents\\BackupPc\\Arquivos\\Estudos\\Eng.Comp\\MAC0321\\EP2-NUSP1-NUSP2\\csv\\usuarios.csv\"");
+		
+		//fail("Not yet implemented");
 	}
+	
+	
 
 }

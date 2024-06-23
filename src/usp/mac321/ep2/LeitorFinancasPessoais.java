@@ -15,8 +15,23 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 	private List<TipoReceita> receitas;
 	private List<Lancamento> lancamentos;
 
+	
+	private boolean repetido(String apelido) throws ApelidoRepetidoException {
+		for (int i = 0; i < usuarios.size(); i++) {
+			if (usuarios.get(i).getApelido().equals(apelido)) {
+				return true;
+			}
+			
+			else throw new ApelidoRepetidoException(apelido);
+		}
+		
+		return false;
+		
+	}
+	
+	
 	@Override
-	public List<Usuario> leUsuarios(String nomeArquivoUsuarios) {
+	public List<Usuario> leUsuarios(String nomeArquivoUsuarios){
 		List<Usuario> listaUsuarios = new ArrayList<Usuario>();
 		
 		try {
@@ -24,21 +39,29 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 			String line = null;
 			do {
 				line = br.readLine();
-				if (line != null) listaUsuarios.add(new Usuario(line.split(",")[0], line.split(",")[1]));
-			} while(line != null);
-			br.close();
+				if (line != null && !repetido(line.split(",")[0])) listaUsuarios.add(new Usuario(line.split(",")[0], line.split(",")[1]));
+				
+				
+			} 
+			
+			
+			while(line != null);
+				br.close();
 		}
 		
 		catch (FileNotFoundException e) {
 			System.err.println("Arquivo não encontrado");
 
-		} // Não conseguir encontrar se também serve para isso
-		  //IOException serve para isso, mas encontrei uma exceção exatamente para esse problema
+		} // Não consegui encontrar se IOException também serve
+		  //para isso, mas encontrei uma exceção exatamente para esse problema
 		
 		catch (IOException e) { //pesquisar se isso se aplica a não existir nome de arquivo!!
 			e.printStackTrace();
 		}
 		
+		catch (ApelidoRepetidoException e) {
+			System.err.println(e);
+		}
 		
 		
 		return listaUsuarios;
