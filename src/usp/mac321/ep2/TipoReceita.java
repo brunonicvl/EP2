@@ -37,6 +37,15 @@ public class TipoReceita implements TipoOperacao {
 		return nomeDoTipo;
 	}
 	
+	public String getSubcategorias() {
+		String sc = "Categoria: " + this.getNome() + " Subcategorias: ";
+		
+		for (TipoReceita t: subcategorias) {
+			sc += t.getNome() +  " ";
+		}
+		
+		return sc;
+	}
 	@Override
 	public String toString() {
 		if(sub) {
@@ -44,19 +53,5 @@ public class TipoReceita implements TipoOperacao {
 		}
 		
 		return nomeDoTipo;
-	}
-
-	public boolean isSub() {
-		return sub;
-	}
-	
-	public List<TipoReceita> getSubcategorias() throws SubcategoriasInexistentesException{
-		try {
-			if(subcategorias.isEmpty()) throw new SubcategoriasInexistentesException(nomeDoTipo);
-		}
-		catch(Exception e) {
-			throw new SubcategoriasInexistentesException(nomeDoTipo);
-		}
-		return subcategorias;
 	}
 }

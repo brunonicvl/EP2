@@ -36,6 +36,16 @@ public class TipoDespesa implements TipoOperacao {
 	public String getNome() {
 		return nomeDoTipo;
 	}
+	public String getSubcategorias() { // Renomear isso depois
+		String sc = "Categoria: " + this.getNome() + " Subcategorias: ";
+		
+		for (TipoDespesa t: subcategorias) {
+			sc += t.getNome() +  " ";
+		}
+		
+		return sc;
+	}
+	
 	
 	@Override
 	public String toString() {

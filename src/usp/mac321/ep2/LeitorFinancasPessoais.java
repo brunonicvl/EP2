@@ -80,6 +80,8 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(nomeArquivoTiposDespesas));
 			String line = null;
+			
+			line = br.readLine(); // Descarta a primeira linha do arquivo
 			do {
 				line = br.readLine();
 				//Espera-se linha do tipo "Tipo,Subcategoria,Subcategoria,Subcategoria,..."
@@ -90,13 +92,16 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 						List<TipoDespesa> subtiposDespesa = new ArrayList<TipoDespesa>();
 						
 						TipoDespesa tipoPrincipal;
+						/*
 						try {
 							tipoPrincipal = getTipoDespesaFromList(lineSplit[0], listaTiposDespesas);
 						}
 						catch(TipoNaoRegistradoException e) {
 							tipoPrincipal = new TipoDespesa(lineSplit[0], TIPO_PRINCIPAL);
-							listaTiposDespesas.add(tipoPrincipal);
-						}
+							//listaTiposDespesas.add(tipoPrincipal);
+						}*/
+						
+						tipoPrincipal = new TipoDespesa(lineSplit[0], TIPO_PRINCIPAL);
 						
 						for(int i=1; i<lineSplit.length; i++) {
 							TipoDespesa novoTipo;
@@ -106,12 +111,13 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 							}
 							catch(TipoNaoRegistradoException e) {
 								novoTipo = new TipoDespesa(lineSplit[i], SUBCATEGORIA);
-								listaTiposDespesas.add(novoTipo);
+								//listaTiposDespesas.add(novoTipo);
 							}
 							subtiposDespesa.add(novoTipo);
 							novoTipo.setTipoDerivado(tipoPrincipal);
 						}
 						tipoPrincipal.setSubcategorias(subtiposDespesa);
+						listaTiposDespesas.add(tipoPrincipal);
 					}
 					
 					else {
@@ -140,6 +146,8 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(nomeArquivoTiposReceitas));
 			String line = null;
+			
+			line = br.readLine();
 			do {
 				line = br.readLine();
 				//Espera-se linha do tipo "Tipo,Subcategoria,Subcategoria,Subcategoria,..."
@@ -151,13 +159,14 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 						List<TipoReceita> subtiposReceita = new ArrayList<TipoReceita>();
 						
 						TipoReceita tipoPrincipal;
-						try {
+						/*try {
 							tipoPrincipal = getTipoReceitaFromList(lineSplit[0], listaTiposReceitas);
 						}
 						catch(TipoNaoRegistradoException e) {
 							tipoPrincipal = new TipoReceita(lineSplit[0], TIPO_PRINCIPAL);
-							listaTiposReceitas.add(tipoPrincipal);
-						}
+							//listaTiposReceitas.add(tipoPrincipal);
+						}*/
+						tipoPrincipal = new TipoReceita(lineSplit[0], TIPO_PRINCIPAL);
 						
 						for(int i=1; i<lineSplit.length; i++) {
 							TipoReceita novoTipo;
@@ -167,12 +176,14 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 							}
 							catch(TipoNaoRegistradoException e) {
 								novoTipo = new TipoReceita(lineSplit[i], SUBCATEGORIA);
-								listaTiposReceitas.add(novoTipo);
+								//listaTiposReceitas.add(novoTipo);
 							}
 							subtiposReceita.add(novoTipo);
 							novoTipo.setTipoDerivado(tipoPrincipal);
 						}
 						tipoPrincipal.setSubcategorias(subtiposReceita);
+						listaTiposReceitas.add(tipoPrincipal);
+						
 					}
 					
 					else {
