@@ -29,18 +29,20 @@ class TestaLeitura {
 	void tearDown() throws Exception {
 	}*/
 
-	/*@Test
+	@Test
 	public void testTiposDespesas(){
-		tiposDespesas = leitor.leTiposDespesas("tiposDespesas.csv");
+		tiposDespesas = leitor.leTiposDespesas("csv\\tiposDespesas.csv");
 		assertEquals(6, tiposDespesas.size());
+		assertEquals("Categoria: Educação Subcategorias: Curso de Idioma ",tiposDespesas.get(0).getSubcategorias());
 	}
 	
 	@Test
 	public void testTiposReceitas(){
-		tiposReceitas = leitor.leTiposReceitas("tiposReceitas.csv");
+		tiposReceitas = leitor.leTiposReceitas("csv\\tiposReceitas.csv");
 		assertEquals(4, tiposReceitas.size());
+		assertEquals("Categoria: Salário Subcategorias: Principal ",tiposReceitas.get(0).getSubcategorias());
 	}
-	*/
+	
 	@Test
 	public void testUsuarios(){
 		usuarios = leitor.leUsuarios("csv\\usuarios.csv");
