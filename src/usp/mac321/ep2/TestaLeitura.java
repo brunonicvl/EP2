@@ -2,6 +2,8 @@ package usp.mac321.ep2;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -18,16 +20,21 @@ class TestaLeitura {
 	List<Lancamento>   lancamentos;
 	LeitorFinancasPessoaisDAO leitor;
 
-	
+	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		leitor = new LeitorFinancasPessoais();
+		System.setOut(new PrintStream(outContent));
+		System.setErr(new PrintStream(errContent));
 	}
-
-	/*@AfterEach
-	void tearDown() throws Exception {
-	}*/
+	
+	@AfterEach
+	public void cleanUpStreams() {
+		System.setOut(System.out);
+		System.setErr(System.err);
+	}
 
 	@Test
 	public void testTiposDespesas(){
@@ -40,8 +47,9 @@ class TestaLeitura {
 	public void testTiposReceitas(){
 		tiposReceitas = leitor.leTiposReceitas("csv\\tiposReceitas.csv");
 		assertEquals(4, tiposReceitas.size());
-		assertEquals("Categoria: Salário Subcategorias: Principal ",tiposReceitas.get(0).getSubcategorias());
+		assertEquals("Categoria: Salário Subcategorias: Principal ",tiposReceitas.get(0).getSubcategoria());
 	}
+	
 	
 	@Test
 	public void testUsuarios(){
@@ -53,6 +61,16 @@ class TestaLeitura {
 		assertEquals("José Josimarson Eleutério",usuarios.get(1).getNome());
 		
 	}
+	
+	@Test
+	public void testeUsuarioRepetido() {
+		leitor.leUsuarios("csv\\usuariosRepetidos.csv");
+		assertEquals("Apelido Pai está repetido.", errContent.toString());
+		
+		
+	}
+	
+	
 	
 	/*
 	@Test

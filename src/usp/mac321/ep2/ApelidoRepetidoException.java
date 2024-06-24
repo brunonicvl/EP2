@@ -10,6 +10,6 @@ public class ApelidoRepetidoException extends Exception{
 	
 	
 	public String toString() {
-		return "Apelido" + apelido + "está repetido.";
+		return "Apelido " + apelido + " está repetido.";
 	}
 }

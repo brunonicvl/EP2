@@ -9,7 +9,8 @@ import java.text.ParseException;
 public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 	private static final boolean TIPO_PRINCIPAL = false;
 	private static final boolean SUBCATEGORIA = true;
-	
+	private static final boolean DESPESA = true;
+	private static final boolean RECEITA = false;
 	private List<Usuario> usuarios;
 	private List<TipoDespesa> despesas;
 	private List<TipoReceita> receitas;
@@ -66,7 +67,7 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 		}
 		
 		catch (ApelidoRepetidoException e) {
-			System.err.println(e.toString());
+			System.err.print(e.toString());
 		}
 		
 		
@@ -213,17 +214,23 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(nomeArquivoLancamentos));
 			String line = null;
+			
+			
 			do {
 				line = br.readLine();
 				if (line != null) {
 					//Lancamentos serão salvos como uma linha do tipo
 					//dia, mes, ano, user, receitaOuDespesa, tipo, descricao, valor
+					long identificador;
+					int dia, mes, ano;
 					String[] lineSplit = line.split(",");
 					
-					int dia, mes, ano;
-					dia = Integer.parseInt(lineSplit[0]);
-					mes = Integer.parseInt(lineSplit[1]);
-					ano = Integer.parseInt(lineSplit[2]);
+					identificador = Long.parseLong(lineSplit[0]);
+					
+					dia = Integer.parseInt(lineSplit[1]);
+					mes = Integer.parseInt(lineSplit[2]);
+					ano = Integer.parseInt(lineSplit[3]);
+					
 					if(dia<=0) throw new ValorNegativoException(dia);
 					if(mes<=0) throw new ValorNegativoException(mes);
 					if(ano<=0) throw new ValorNegativoException(ano);
@@ -232,12 +239,13 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 					user = getUsuarioFromList(lineSplit[3], usuarios);
 					
 					boolean rOuD;
-					if(lineSplit[4].equals("receita")) {
-						rOuD = RECEITA;
-					}
-					else if(lineSplit[4].equals("despesa")) {
+					if(lineSplit[4].equals("TRUE")) {
 						rOuD = DESPESA;
 					}
+					else if(lineSplit[4].equals("FALSE")) {
+						rOuD = RECEITA;
+					}
+					
 					else {
 						throw new ValorInvalidoException(lineSplit[4]);
 					}
