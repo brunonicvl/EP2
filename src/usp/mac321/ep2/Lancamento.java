@@ -20,6 +20,21 @@ public class Lancamento {
 		this.tipo = tipo;
 		this.descricao = descricao;
 		this.valor = valor;
+		identificador = contadorDeLancamentos;
+		contadorDeLancamentos++;
 	}
 	
-}
+	Lancamento(int dia, int mes, int ano, Usuario user, boolean receitaOuDespesa, TipoOperacao tipo, String descricao, double valor, long indentificador){
+		this.dia = dia;
+		this.mes = mes;
+		this.ano = ano;
+		this.user = user;
+		this.receitaOuDespesa = receitaOuDespesa;
+		this.tipo = tipo;
+		this.descricao = descricao;
+		this.valor = valor;
+		this.identificador = identificador;
+		if(contadorDeLancamentos<=identificador) {
+			contadorDeLancamentos=identificador+1;
+		}
+	}
