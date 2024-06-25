@@ -1,8 +1,8 @@
 package usp.mac321.ep2;
 
 public class Usuario {
-	String apelido;
-	String nome;
+	private String apelido;
+	private String nome;
 	
 	Usuario(String apelido, String nome){
 		this.apelido = apelido;
