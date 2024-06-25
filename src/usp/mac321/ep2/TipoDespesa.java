@@ -3,10 +3,10 @@ package usp.mac321.ep2;
 import java.util.List;
 
 public class TipoDespesa implements TipoOperacao {
-	String nomeDoTipo;
-	boolean sub;
-	TipoDespesa tipoDerivado;
-	List<TipoDespesa> subcategorias;
+	private String nomeDoTipo;
+	private boolean sub;
+	private TipoDespesa tipoDerivado;
+	private List<TipoDespesa> subcategorias;
 	
 	TipoDespesa(String n){
 		nomeDoTipo = n;
@@ -45,7 +45,10 @@ public class TipoDespesa implements TipoOperacao {
 		
 		return sc;
 	}
-	
+
+	public boolean isSub() {
+		return sub;
+	}
 	
 	@Override
 	public String toString() {
