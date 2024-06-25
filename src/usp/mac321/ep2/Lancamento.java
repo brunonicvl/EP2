@@ -2,14 +2,14 @@ package usp.mac321.ep2;
 
 public class Lancamento {
 	private static long contadorDeLancamentos;
-	long identificador;
-	int dia, mes, ano;
-	Usuario user;
-	boolean receitaOuDespesa;
-	TipoOperacao tipo;
-	String descricao;
-	double valor;
-	EstadoLancamento launchState;
+	private long identificador;
+	private int dia, mes, ano;
+	private Usuario user;
+	private boolean receitaOuDespesa;
+	private TipoOperacao tipo;
+	private String descricao;
+	private double valor;
+	private EstadoLancamento launchState;
 	
 	Lancamento(int dia, int mes, int ano, Usuario user, boolean receitaOuDespesa, TipoOperacao tipo, String descricao, double valor){
 		this.dia = dia;
@@ -22,6 +22,7 @@ public class Lancamento {
 		this.valor = valor;
 		identificador = contadorDeLancamentos;
 		contadorDeLancamentos++;
+		launchState = new Invalido();
 	}
 	
 	Lancamento(int dia, int mes, int ano, Usuario user, boolean receitaOuDespesa, TipoOperacao tipo, String descricao, double valor, long indentificador){
@@ -37,4 +38,34 @@ public class Lancamento {
 		if(contadorDeLancamentos<=identificador) {
 			contadorDeLancamentos=identificador+1;
 		}
+		launchState = new Invalido();
 	}
+
+	public long getID() {
+		return identificador;
+	}
+	
+	public String getData() {
+		return dia + "/" + mes + "" + ano;
+	}
+	
+	public Usuario getUser() {
+		return user;
+	}
+	
+	public boolean getROuD() {
+		return receitaOuDespesa;
+	}
+	
+	public TipoOperacao getTipo() {
+		return tipo;
+	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
+	
+	public double getValor() {
+		return valor;
+	}
+}
