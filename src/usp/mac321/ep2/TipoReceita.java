@@ -3,10 +3,10 @@ package usp.mac321.ep2;
 import java.util.List;
 
 public class TipoReceita implements TipoOperacao {
-	String nomeDoTipo;
-	boolean sub;
-	TipoReceita tipoDerivado;
-	List<TipoReceita> subcategorias;
+	private String nomeDoTipo;
+	private boolean sub;
+	private TipoReceita tipoDerivado;
+	private List<TipoReceita> subcategorias;
 	
 	TipoReceita(String n){
 		nomeDoTipo = n;
