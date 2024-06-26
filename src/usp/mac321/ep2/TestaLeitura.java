@@ -25,7 +25,7 @@ class TestaLeitura {
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		leitor = new LeitorFinancasPessoais();
+		leitor = new LeitorFinancasPessoais2();
 		System.setOut(new PrintStream(outContent));
 		System.setErr(new PrintStream(errContent));
 	}
@@ -38,23 +38,23 @@ class TestaLeitura {
 
 	@Test
 	public void testTiposDespesas(){
-		tiposDespesas = leitor.leTiposDespesas("csv\\tiposDespesas.csv");
-		assertEquals(6, tiposDespesas.size());
-		assertEquals("Categoria: Educação Subcategorias: Curso de Idioma ",tiposDespesas.get(0).getSubcategorias());
+		tiposDespesas = leitor.leTiposDespesas("csv//tiposDespesas.csv");
+		assertEquals(9, tiposDespesas.size());
+		assertEquals("Categoria: Educação Subcategorias: Curso de Idioma Jardim da Infância ",tiposDespesas.get(2).getSubcategorias());
 		
 	}
 	
 	@Test
 	public void testTiposReceitas(){
-		tiposReceitas = leitor.leTiposReceitas("csv\\tiposReceitas.csv");
-		assertEquals(4, tiposReceitas.size());
-		assertEquals("Categoria: Salário Subcategorias: Principal ",tiposReceitas.get(0).getSubcategoria());
+		tiposReceitas = leitor.leTiposReceitas("csv//tiposReceitas.csv");
+		assertEquals(6, tiposReceitas.size());
+		assertEquals("Categoria: Salário Subcategorias: Principal Bico ",tiposReceitas.get(2).getSubcategorias());
 	}
 	
 	
 	@Test
 	public void testUsuarios(){
-		usuarios = leitor.leUsuarios("csv\\usuarios.csv");
+		usuarios = leitor.leUsuarios("csv//usuarios.csv");
 		assertEquals(2, usuarios.size());
 		assertEquals("Pai", usuarios.get(0).getApelido());
 		assertEquals("Zezinho", usuarios.get(1).getApelido());
@@ -65,10 +65,8 @@ class TestaLeitura {
 	
 	@Test
 	public void testeUsuarioRepetido() {
-		leitor.leUsuarios("csv\\usuariosRepetidos.csv");
+		leitor.leUsuarios("csv//usuariosRepetidos.csv");
 		assertEquals("Apelido Pai está repetido.", errContent.toString());
-		
-		
 	}
 	
 	
@@ -76,7 +74,10 @@ class TestaLeitura {
 	
 	@Test
 	public void testLancamentosOK(){
-		lancamentos = leitor.leLancamentos("csv\\lancamentos.csv");
+		tiposDespesas = leitor.leTiposDespesas("csv//tiposDespesas.csv");
+		tiposReceitas = leitor.leTiposReceitas("csv//tiposReceitas.csv");
+		usuarios = leitor.leUsuarios("csv//usuarios.csv");
+		lancamentos = leitor.leLancamentos("csv//lancamentos.csv");
 		assertEquals(8, lancamentos.size());
 	}
 
@@ -91,7 +92,7 @@ class TestaLeitura {
 		fail();
 	}
 	@Test
-	public void testLancamentoReceiraDesconhecida(){
+	public void testLancamentoReceitaDesconhecida(){
 		// TODO
 		fail();
 	}
