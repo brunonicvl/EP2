@@ -35,8 +35,8 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 	
 	@Override
 	public List<Usuario> leUsuarios(String nomeArquivoUsuarios){
-		List<Usuario> listaUsuarios = new ArrayList<Usuario>();
-		
+		//List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+		usuarios = new ArrayList<Usuario>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(nomeArquivoUsuarios));
 			String line = null;
@@ -44,9 +44,9 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 			line = br.readLine();
 			do {
 				line = br.readLine();
-				if (line != null && !repetido(line.split(",")[0],listaUsuarios)) {
-					listaUsuarios.add(new Usuario(line.split(",")[0], line.split(",")[1]));
-				
+				if (line != null && !repetido(line.split(",")[0],usuarios)) {
+					usuarios.add(new Usuario(line.split(",")[0], line.split(",")[1]));
+					
 				}
 				
 			} 
@@ -70,13 +70,15 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 			System.err.print(e.toString());
 		}
 		
-		
-		return listaUsuarios;
+		//usuarios = listaUsuarios;
+		return usuarios;
 	}
 
 	@Override
 	public List<TipoDespesa> leTiposDespesas(String nomeArquivoTiposDespesas) {
-		List<TipoDespesa> listaTiposDespesas = new ArrayList<TipoDespesa>();
+		//List<TipoDespesa> listaTiposDespesas = new ArrayList<TipoDespesa>();
+		despesas = new ArrayList<TipoDespesa>();
+		
 		
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(nomeArquivoTiposDespesas));
@@ -107,7 +109,7 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 						for(int i=1; i<lineSplit.length; i++) {
 							TipoDespesa novoTipo;
 							try {
-								novoTipo = getTipoDespesaFromList(lineSplit[i], listaTiposDespesas);
+								novoTipo = getTipoDespesaFromList(lineSplit[i], despesas);
 								novoTipo.sub = SUBCATEGORIA;
 							}
 							catch(TipoNaoRegistradoException e) {
@@ -118,11 +120,11 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 							novoTipo.setTipoDerivado(tipoPrincipal);
 						}
 						tipoPrincipal.setSubcategorias(subtiposDespesa);
-						listaTiposDespesas.add(tipoPrincipal);
+						despesas.add(tipoPrincipal);
 					}
 					
 					else {
-						listaTiposDespesas.add(new TipoDespesa(line, TIPO_PRINCIPAL));
+						despesas.add(new TipoDespesa(line, TIPO_PRINCIPAL));
 					}
 				}
 			} while(line != null);
@@ -137,12 +139,12 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 			e.printStackTrace();
 		}
 		
-		return listaTiposDespesas;
+		return despesas;
 	}
 
 	@Override
 	public List<TipoReceita> leTiposReceitas(String nomeArquivoTiposReceitas) {
-		List<TipoReceita> listaTiposReceitas = new ArrayList<TipoReceita>();
+		receitas = new ArrayList<TipoReceita>();
 		
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(nomeArquivoTiposReceitas));
@@ -172,7 +174,7 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 						for(int i=1; i<lineSplit.length; i++) {
 							TipoReceita novoTipo;
 							try {
-								novoTipo = getTipoReceitaFromList(lineSplit[i], listaTiposReceitas);
+								novoTipo = getTipoReceitaFromList(lineSplit[i], receitas);
 								novoTipo.sub = SUBCATEGORIA;
 							}
 							catch(TipoNaoRegistradoException e) {
@@ -183,12 +185,12 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 							novoTipo.setTipoDerivado(tipoPrincipal);
 						}
 						tipoPrincipal.setSubcategorias(subtiposReceita);
-						listaTiposReceitas.add(tipoPrincipal);
+						receitas.add(tipoPrincipal);
 						
 					}
 					
 					else {
-						listaTiposReceitas.add(new TipoReceita(line, TIPO_PRINCIPAL));
+						receitas.add(new TipoReceita(line, TIPO_PRINCIPAL));
 					}
 				}
 			} while(line != null);
@@ -204,58 +206,61 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 			e.printStackTrace();
 		}
 		
-		return listaTiposReceitas;
+		return receitas;
 	}
 
 	@Override
 	public List<Lancamento> leLancamentos(String nomeArquivoLancamentos) {
-		List<Lancamento> listaLancamentos = new ArrayList<Lancamento>();
+		//List<Lancamento> listaLancamentos = new ArrayList<Lancamento>();
+		lancamentos = new ArrayList<Lancamento>();
 		
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(nomeArquivoLancamentos));
 			String line = null;
 			
-			
+			line = br.readLine();
 			do {
 				line = br.readLine();
 				if (line != null) {
 					//Lancamentos serão salvos como uma linha do tipo
 					//dia, mes, ano, user, receitaOuDespesa, tipo, descricao, valor
-					long identificador;
+					int identificador;
 					int dia, mes, ano;
 					String[] lineSplit = line.split(",");
-					
-					identificador = Long.parseLong(lineSplit[0]);
-					
-					dia = Integer.parseInt(lineSplit[1]);
-					mes = Integer.parseInt(lineSplit[2]);
-					ano = Integer.parseInt(lineSplit[3]);
+					String[] dataSplit = lineSplit[1].split("/");
+					System.out.println(lineSplit);
+					identificador = Integer.parseInt(lineSplit[0]);
+
+					dia = Integer.parseInt(dataSplit[0]);
+					mes = Integer.parseInt(dataSplit[1]);
+					ano = Integer.parseInt(dataSplit[2]);
 					
 					if(dia<=0) throw new ValorNegativoException(dia);
 					if(mes<=0) throw new ValorNegativoException(mes);
 					if(ano<=0) throw new ValorNegativoException(ano);
 					
 					Usuario user;
-					user = getUsuarioFromList(lineSplit[3], usuarios);
+					user = getUsuarioFromList(lineSplit[4], usuarios);
 					
 					boolean rOuD;
-					if(lineSplit[4].equals("TRUE")) {
+					if(lineSplit[5].equals("TRUE")) {
 						rOuD = DESPESA;
 					}
-					else if(lineSplit[4].equals("FALSE")) {
+					else if(lineSplit[5].equals("FALSE")) {
 						rOuD = RECEITA;
 					}
 					
 					else {
-						throw new ValorInvalidoException(lineSplit[4]);
+						throw new ValorInvalidoException(lineSplit[5]);
 					}
 					
 					TipoOperacao tipo;
 					try {
-						tipo = getTipoReceitaFromList(lineSplit[5], receitas);
+						tipo = getTipoReceitaFromList(lineSplit[6], receitas);
 					}
 					catch(TipoNaoRegistradoException e){
-						tipo = getTipoDespesaFromList(lineSplit[5], despesas);
+						tipo = getTipoDespesaFromList(lineSplit[6], despesas);
+						System.out.println("IOException: " + e.getMessage());
 					}
 					if(tipo.getClass().equals(TipoReceita.class) && (rOuD==DESPESA) ||
 							tipo.getClass().equals(TipoDespesa.class) && (rOuD==RECEITA)) {
@@ -266,33 +271,38 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 					
 					double valor;
 					valor = Double.parseDouble(lineSplit[7]);
-					if(valor<=0) throw new ValorNegativoException(valor);
+					if(valor<=0) throw new ValorNegativoException(1);
 					
-					long identificador;
-					identificador = Long.parseLong(lineSplit[8]);
+					
+					
 					if(identificador<=0) throw new ValorNegativoException(identificador);
-					for(Lancamento i: listaLancamentos) {
+					for(Lancamento i: lancamentos) {
 						if(i.identificador==identificador) {
 							throw new IdentificadorRepetidoEmLancamentosException(identificador);
 						}
 					}
 					
-					listaLancamentos.add(new Lancamento(dia, mes, ano, user, rOuD, tipo, descricao, valor, identificador));
+					lancamentos.add(new Lancamento(dia, mes, ano, user, rOuD, tipo, descricao, valor, identificador));
+					System.out.println(1234);
 				}
 			} while(line != null);
 			br.close();
 		}
 		catch (IOException e) { //pesquisar se isso se aplica a não existir nome de arquivo!!
 			e.printStackTrace();
+			System.out.println("IOException1: " + e.getMessage());
 		}
-		catch (FileNotFoundException e) {
+		/*catch (FileNotFoundException e) { Talvez n'ao precise dessa exception
 			System.err.println("Arquivo não encontrado");
-		}
+		}*/
+		
+		
 		catch (Exception e) { //pesquisar se isso se aplica a não existir nome de arquivo!!
 			e.printStackTrace();
+			System.out.println("IOException2: " + e.getMessage());
 		}
 		
-		return listaLancamentos;
+		return lancamentos;
 	}
 	
 	public TipoDespesa getTipoDespesaFromList(String nome, List<TipoDespesa> l) throws TipoNaoRegistradoException {
@@ -313,12 +323,25 @@ public class LeitorFinancasPessoais implements LeitorFinancasPessoaisDAO {
 		throw new TipoNaoRegistradoException(nome);
 	}
 	
+	/*
 	public Usuario getUsuarioFromList(String apelido, List<Usuario> l) throws UsuarioNaoExistenteException {
+		if (l != null){
 		for(Usuario i: l) {
 			if(i.getApelido().equals(apelido)) {
 				return i;
 			}
-		}
+		}}
+		throw new UsuarioNaoExistenteException(apelido);
+	}*/
+	
+	public Usuario getUsuarioFromList(String apelido, List<Usuario> l) throws UsuarioNaoExistenteException {
+		if (l != null){
+		for(Usuario i: l) {
+			if(i.getApelido().equals(apelido)) {
+				return i;
+			}
+		}}
 		throw new UsuarioNaoExistenteException(apelido);
 	}
+	
 }

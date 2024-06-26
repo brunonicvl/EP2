@@ -22,6 +22,7 @@ public class Lancamento {
 		this.valor = valor;
 		identificador = contadorDeLancamentos;
 		contadorDeLancamentos++;
+		System.out.println("lancamento criado");
 	}
 	
 	Lancamento(int dia, int mes, int ano, Usuario user, boolean receitaOuDespesa, TipoOperacao tipo, String descricao, double valor, long indentificador){
@@ -37,4 +38,14 @@ public class Lancamento {
 		if(contadorDeLancamentos<=identificador) {
 			contadorDeLancamentos=identificador+1;
 		}
-	}}
+		
+		System.out.println("lancamento criado");
+	}
+	
+	
+
+
+
+
+
+}

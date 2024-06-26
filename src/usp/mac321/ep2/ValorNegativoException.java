@@ -9,6 +9,10 @@ public class ValorNegativoException extends Exception {
 		this.val = val;
 	}
 	
+	public ValorNegativoException(int val) {
+		this.val = val;
+	}
+	
 	public String toString() {
 		return "ValorNegativoException[" + val + "]\n" + super.toString();
 	}

@@ -41,6 +41,7 @@ class TestaLeitura {
 		tiposDespesas = leitor.leTiposDespesas("csv\\tiposDespesas.csv");
 		assertEquals(6, tiposDespesas.size());
 		assertEquals("Categoria: Educação Subcategorias: Curso de Idioma ",tiposDespesas.get(0).getSubcategorias());
+		
 	}
 	
 	@Test
@@ -72,10 +73,10 @@ class TestaLeitura {
 	
 	
 	
-	/*
+	
 	@Test
 	public void testLancamentosOK(){
-		lancamentos = leitor.leLancamentos("lancamentos.csv");
+		lancamentos = leitor.leLancamentos("csv\\lancamentos.csv");
 		assertEquals(8, lancamentos.size());
 	}
 
@@ -94,6 +95,6 @@ class TestaLeitura {
 		// TODO
 		fail();
 	}
-	*/
+	
 
 }
